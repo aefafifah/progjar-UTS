@@ -244,7 +244,7 @@ Pada program ini, diawali dengan pembuatan objek socket UDP (sama seperti server
 
 ## Dokumentasi Program 
 
-a. satu klien untuk banyak server 
+a. satu server untuk banyak klien
 
  ![reference image](image/satuuntuksemwa.jpeg)
 
