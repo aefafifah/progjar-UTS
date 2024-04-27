@@ -251,6 +251,7 @@ a. satu server untuk banyak klien
  Di sini serverudp.py sudah dijalankan dan klien pada clientudp.py juga dijalankan, pada program ini thread dimanfaatkan agar server dapat menerima banyak koneksi, dapat dilihat terdapat banyak sekali klien yang terhubung dari 58945,61108,52743, dan seterusnya
 
  b. klien menebak warna server 
+ 
  ![reference image](image/klienmenebak.jpeg)
 
  Nah di sini, klien menerima warna red dari server dan kemudian ditebak dalam bahasa indonesia di klien, jika benar maka server mengirim feedback nilai 100 pada klien.
@@ -260,6 +261,7 @@ a. satu server untuk banyak klien
  Di sinilah UDP bekerja, ketika waktu habis asalkan setiap 10 detik maka server akan mengirimkan warna pada klien tanpa peduli klien sudah menebak atau belum 
 
  c. Sistem UDP
+ 
  ![reference image](image/klientelat.jpeg)
 
  Ketika klien telat cukup lama maka prinsip udp yang terus menerus mengirim warna terus dilakukan, bahkan pengoreksian pun jadi tertumpuk dan tidak dapat dilakukan karna klien terlalu lama dalam menjawab 
