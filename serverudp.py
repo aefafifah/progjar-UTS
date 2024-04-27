@@ -1,5 +1,4 @@
 import socket
-import json
 import random
 import threading
 import time
@@ -21,10 +20,10 @@ def client_response_timer(addr):
 # Function to stop color sender thread and close server socket
 def stop_server():
     global running
-    running = False  # Set running flag to False to stop the while loop in the main server code
-    color_sender_thread.join()  # Wait for color sender thread to finish
-    ServerSocket.close()  # Close the server socket
-    sys.exit(0)  # Exit the program with exit code 0
+    running = False  # set kondisi
+    color_sender_thread.join()  # agar dapat mengirim color terus menerus
+    ServerSocket.close()  
+    sys.exit(0)  
 
 # Membuat pemetaan antara warna dalam bahasa Inggris dan bahasa Indonesia
 color_mapping = {
@@ -59,30 +58,30 @@ except socket.error as e:
 
 print('Waiting for a Connection..')
 
-feedbacks = {}  # Dictionary to store feedback from clients
-feedback_lock = threading.Lock()  # Lock to access feedbacks dictionary
-response_received = threading.Event()  # Event to mark if response from client is received
+feedbacks = {}  
+feedback_lock = threading.Lock() 
+response_received = threading.Event()  
 
-clients = set()  # Set to store addresses of connected clients
+clients = set()  
 
 # Define ClientSocket
 ClientSocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 # Start a thread to continuously send colors to all clients
-def color_sender(running):  # Receive running flag as argument
+def color_sender(running):  
     while running:
         random_color = random.choice(colors)
         send_color_to_clients(random_color)
-        time.sleep(10)  # Send color every 10 seconds
+        time.sleep(10)  # set 10 detik ngirim 
 
-color_sender_thread = threading.Thread(target=color_sender, args=(True,))  # Pass True to indicate running
+color_sender_thread = threading.Thread(target=color_sender, args=(True,))  
 color_sender_thread.start()
 
-running = True  # Define running flag here
+running = True  # running -> true
 while running:
     data, addr = ServerSocket.recvfrom(1024)
     print('Connected to: ' + addr[0] + ':' + str(addr[1]))
-    clients.add(addr)  # Add client address to the set of connected clients
+    clients.add(addr)  
     
     # Start timer for client response time
     timer_thread = threading.Thread(target=client_response_timer, args=(addr,))
@@ -97,19 +96,19 @@ while running:
     Response, _ = ServerSocket.recvfrom(1024)
     response_received.set()  # Mark that response is received
     
-    # Check client's answer
+    # Check jawaban klien
     client_answer = Response.decode('utf-8').lower().strip()  # Convert to lowercase and remove whitespace
     correct_answer = color_mapping[random_color]  # Get Indonesian translation of the correct color
     feedback = 100 if client_answer == correct_answer else 0
     
-    # Provide feedback to the client
+    # feedback ke klien
     feedback_lock.acquire()
     try:
         feedbacks[addr] = feedback
     finally:
         feedback_lock.release()
     
-    # Correct the answer and give feedback
+    # cek benar 
     if feedback == 100:
         print("Client at {} answered correctly with '{}'.".format(addr, client_answer))
         ServerSocket.sendto(b'Jawaban Anda benar! nilai anda 100', addr)
@@ -117,5 +116,5 @@ while running:
         print("Client at {} answered incorrectly with '{}' (correct answer: '{}').".format(addr, client_answer, correct_answer))
         ServerSocket.sendto(b'Jawaban Anda salah! nilai anda 0', addr)
 
-
+# stop server
 stop_server()

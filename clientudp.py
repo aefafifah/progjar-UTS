@@ -20,7 +20,7 @@ ClientSocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 host = '127.0.0.1'
 port = 1233
 
-# Mengirim pesan kosong ke server untuk memulai komunikasi
+# Pesan Kosong
 ClientSocket.sendto(b'', (host, port))
 
 running = True
@@ -30,7 +30,7 @@ while running:
     color = Response.decode('utf-8')
     print("Received color from server:", color)
     
-    # Meminta jawaban dari pengguna dalam bahasa Indonesia
+    # Tebak-tebakan sisi klien dimulai
     answer = input("Apa warna ini? (Jawab dalam bahasa Indonesia): ")
     
     # Mengirim jawaban pengguna ke server
@@ -40,6 +40,6 @@ while running:
     feedback, _ = ClientSocket.recvfrom(1024)
     print(feedback.decode('utf-8'))
     
-# Menutup koneksi socket saat loop selesai
+
 ClientSocket.close()
-sys.exit(0)  # Mengakhiri program dengan kode keluar 0
+sys.exit(0)  
